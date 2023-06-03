@@ -4,8 +4,10 @@ import { v4 as uuid } from "uuid";
 
 const DB_FILE_PATH = "./core/db";
 
+type UUID = string;
+
 interface Todo {
-  id: string;
+  id: UUID;
   date: string;
   content: string;
   done: boolean;
@@ -41,7 +43,7 @@ function read(): Array<Todo> {
   return db.todos;
 }
 
-function update(id: string, partialTodo: Partial<Todo>) {
+function update(id: UUID, partialTodo: Partial<Todo>) {
   let updatedTodo;
   const todos = read();
   todos.forEach((currentTodo) => {
@@ -57,12 +59,26 @@ function update(id: string, partialTodo: Partial<Todo>) {
   return updatedTodo;
 }
 
-function updateContentById(content: string, id: string): Todo {
+function updateContentById(content: string, id: UUID): Todo {
   return update(id, { content });
 }
 
-function updateStatusById(done: boolean, id: string): Todo {
+function updateStatusById(done: boolean, id: UUID): Todo {
   return update(id, { done });
+}
+
+function deleteById(id: UUID) {
+  const todos = read();
+  const todosWIthoutOne = todos.filter((todo) => {
+    if (id === todo.id) {
+      return false;
+    }
+    return true;
+  });
+  fs.writeFileSync(
+    DB_FILE_PATH,
+    JSON.stringify({ todos: todosWIthoutOne }, null, 2),
+  );
 }
 
 function CLEAR_DB() {
@@ -71,15 +87,21 @@ function CLEAR_DB() {
 
 // Create
 CLEAR_DB();
-create("First TODO;");
+const firstTodo = create("First TODO;");
 const secondTodo = create("Second TODO;");
 
 // Read
 console.log(read());
 
 // Update
-updateContentById("Second TODO updated", secondTodo.id);
+updateContentById("Second TODO updated.", secondTodo.id);
 updateStatusById(true, secondTodo.id);
+let todos = read();
+console.log(todos.length, "todos");
 console.log(read());
 
 // Delete
+deleteById(firstTodo.id);
+todos = read();
+console.log(todos.length, "todos after delete");
+console.log(todos);

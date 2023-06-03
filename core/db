@@ -1,15 +1,9 @@
 {
   "todos": [
     {
-      "id": "babd8ad2-92db-4206-9113-43b611728596",
-      "date": "2023-06-03T14:28:19.900Z",
-      "content": "First TODO;",
-      "done": false
-    },
-    {
-      "id": "69f3ca9f-3825-4483-97cc-722418704378",
-      "date": "2023-06-03T14:28:19.900Z",
-      "content": "Second TODO updated",
+      "id": "c786d5fc-4e28-4d2c-b08c-0f7104ca7fc3",
+      "date": "2023-06-03T15:09:04.220Z",
+      "content": "Second TODO updated.",
       "done": true
     }
   ]
