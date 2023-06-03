@@ -74,7 +74,7 @@ export function GlobalStyles({ themeName }: { themeName?: ThemeName }) {
               (key) => `
             --color-primary-${key}: ${
                 theme.primary[key as keyof typeof theme.primary]
-              };`
+              };`,
             )
             .join("")}
           ${Object.keys(theme.neutral)
@@ -82,7 +82,7 @@ export function GlobalStyles({ themeName }: { themeName?: ThemeName }) {
               (key) => `
             --color-neutral-${key}: ${
                 theme.neutral[key as keyof typeof theme.neutral]
-              };`
+              };`,
             )
             .join("")}
             ${Object.keys(theme.negative)
@@ -90,7 +90,7 @@ export function GlobalStyles({ themeName }: { themeName?: ThemeName }) {
               (key) => `
               --color-negative-${key}: ${
                 theme.negative[key as keyof typeof theme.negative]
-              };`
+              };`,
             )
             .join("")}
         }

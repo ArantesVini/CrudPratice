@@ -1,4 +1,4 @@
-import { GlobalStyles } from "../src/theme/GlobalStyles";
+import { GlobalStyles } from "@ui/theme/GlobalStyles";
 
 const bg =
   "https://super.abril.com.br/wp-content/uploads/2021/08/SI_430_Lo-fi_site.png?w=1024&resize=1200,800";
