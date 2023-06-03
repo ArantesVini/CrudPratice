@@ -4,5 +4,7 @@
   "semi": true,
   "colon": true,
   "singleQuote": false,
-  "trailingComma":  "all"
+  "trailingComma":  "all",
+  "editorconfig": true,
+    "bracketSpacing": true
 }
