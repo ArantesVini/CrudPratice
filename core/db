@@ -1,1 +1,14 @@
-Creating some content, now with Typescript!
+{
+  "todos": [
+    {
+      "date": "2023-06-03T13:28:54.514Z",
+      "content": "First TODO;",
+      "done": false
+    },
+    {
+      "date": "2023-06-03T13:28:54.514Z",
+      "content": "Second TODO;",
+      "done": false
+    }
+  ]
+}
