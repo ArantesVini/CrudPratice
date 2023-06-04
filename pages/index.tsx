@@ -1,7 +1,17 @@
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
+import React from "react";
 
 const bg =
   "https://super.abril.com.br/wp-content/uploads/2021/08/SI_430_Lo-fi_site.png?w=1024&resize=1200,800";
+
+const todos = [
+  {
+    id: "86c984c3-84c2-4a8b-a90a-6c6321a5f0da",
+    date: "2023-06-04T13:11:03.088Z",
+    content: "Second TODO updated.",
+    done: true,
+  },
+];
 
 /* eslint-disable space-before-function-paren */
 function HomePage() {
@@ -35,29 +45,25 @@ function HomePage() {
               <th align="left">
                 <input type="checkbox" disabled />
               </th>
-              <th align="left">Id</th>
-              <th align="left">Content</th>
+              <th align="left">Task</th>
               <th />
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td>d4f26</td>
-              <td>
-                Todo content Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Eaque vero facilis obcaecati, autem aliquid eius!
-                Consequatur eaque doloribus laudantium soluta optio odit,
-                provident, ab voluptates doloremque voluptas recusandae
-                aspernatur aperiam.
-              </td>
-              <td align="right">
-                <button data-type="delete">Delete</button>
-              </td>
-            </tr>
+            {todos.map((todo) => {
+              return (
+                <tr key={todo.id}>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
+                  <td>{todo.content}</td>
+                  <td align="right">
+                    <button data-type="delete">Delete</button>
+                  </td>
+                </tr>
+              );
+            })}
 
             <tr>
               <td colSpan={4} align="center" style={{ textAlign: "center" }}>
@@ -67,7 +73,7 @@ function HomePage() {
 
             <tr>
               <td colSpan={4} align="center">
-                Can't find any task
+                Can&apos;t find any task
               </td>
             </tr>
 
