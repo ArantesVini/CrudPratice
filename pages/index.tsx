@@ -1,20 +1,26 @@
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
+import { todoController } from "@ui/theme/controller/todo";
 import React from "react";
 
 const bg =
   "https://super.abril.com.br/wp-content/uploads/2021/08/SI_430_Lo-fi_site.png?w=1024&resize=1200,800";
 
-const todos = [
-  {
-    id: "86c984c3-84c2-4a8b-a90a-6c6321a5f0da",
-    date: "2023-06-04T13:11:03.088Z",
-    content: "Second TODO updated.",
-    done: true,
-  },
-];
+interface HomeTodo {
+  id: string;
+  content: string;
+}
 
 /* eslint-disable space-before-function-paren */
 function HomePage() {
+  const [todos, setTodos] = React.useState<Array<HomeTodo>>([]);
+
+  // using useEffect to load infos onload
+  React.useEffect(() => {
+    todoController.get().then((todos) => {
+      setTodos(todos);
+    });
+  }, []);
+
   return (
     <main>
       <GlobalStyles themeName="indigo" />
