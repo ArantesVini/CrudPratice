@@ -1,5 +1,5 @@
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
-import { todoController } from "@ui/theme/controller/todo";
+import { todoController } from "@ui/controller/todo";
 import React from "react";
 
 const bg =
@@ -12,11 +12,12 @@ interface HomeTodo {
 
 /* eslint-disable space-before-function-paren */
 function HomePage() {
-  const [todos, setTodos] = React.useState<Array<HomeTodo>>([]);
+  const [page, setPage] = React.useState(1);
+  const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
   // using useEffect to load infos onload
   React.useEffect(() => {
-    todoController.get().then((todos) => {
+    todoController.get({ page }).then(({ todos }) => {
       setTodos(todos);
     });
   }, []);
@@ -85,8 +86,8 @@ function HomePage() {
 
             <tr>
               <td colSpan={4} align="center" style={{ textAlign: "center" }}>
-                <button data-type="load-more">
-                  Load more{" "}
+                <button data-type="load-more" onClick={() => setPage(page + 1)}>
+                  Page {page} - Load more{" "}
                   <span
                     style={{
                       display: "inline-block",
