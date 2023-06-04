@@ -34,7 +34,7 @@ function create(content: string): Todo {
   return todo;
 }
 
-function read(): Array<Todo> {
+export function read(): Array<Todo> {
   const dbString = fs.readFileSync(DB_FILE_PATH, "utf-8");
   const db = JSON.parse(dbString || "{}");
   if (!db.todos) {
@@ -84,24 +84,3 @@ function deleteById(id: UUID) {
 function CLEAR_DB() {
   fs.writeFileSync(DB_FILE_PATH, "");
 }
-
-// Create
-CLEAR_DB();
-const firstTodo = create("First TODO;");
-const secondTodo = create("Second TODO;");
-
-// Read
-console.log(read());
-
-// Update
-updateContentById("Second TODO updated.", secondTodo.id);
-updateStatusById(true, secondTodo.id);
-let todos = read();
-console.log(todos.length, "todos");
-console.log(read());
-
-// Delete
-deleteById(firstTodo.id);
-todos = read();
-console.log(todos.length, "todos after delete");
-console.log(todos);
