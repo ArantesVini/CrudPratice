@@ -12,15 +12,31 @@ interface HomeTodo {
 
 /* eslint-disable space-before-function-paren */
 function HomePage() {
+  const [totalPages, setTotalPages] = React.useState(0);
   const [page, setPage] = React.useState(1);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
+  const hasMoresPages = totalPages > page;
+
+  const isFirstPage = page == 1;
+
   // using useEffect to load infos onload
-  React.useEffect(() => {
-    todoController.get({ page }).then(({ todos }) => {
-      setTodos(todos);
-    });
-  }, []);
+  isFirstPage
+    ? React.useEffect(() => {
+        todoController.get({ page }).then(({ todos, pages }) => {
+          setTodos((oldTodos) => {
+            return [...oldTodos, ...todos];
+          });
+          setTotalPages(pages);
+        });
+      }, [page])
+    : React.useEffect(() => {
+        todoController.get({ page }).then(({ todos }) => {
+          setTodos((oldTodos) => {
+            return [...oldTodos, ...todos];
+          });
+        });
+      }, [page]);
 
   return (
     <main>
@@ -78,28 +94,33 @@ function HomePage() {
               </td>
             </tr>
 
-            <tr>
+            {/* <tr>
               <td colSpan={4} align="center">
                 Can&apos;t find any task
               </td>
-            </tr>
+            </tr> */}
 
-            <tr>
-              <td colSpan={4} align="center" style={{ textAlign: "center" }}>
-                <button data-type="load-more" onClick={() => setPage(page + 1)}>
-                  Page {page} - Load more{" "}
-                  <span
-                    style={{
-                      display: "inline-block",
-                      marginLeft: "4px",
-                      fontSize: "1.2em",
-                    }}
+            {hasMoresPages && (
+              <tr>
+                <td colSpan={4} align="center" style={{ textAlign: "center" }}>
+                  <button
+                    data-type="load-more"
+                    onClick={() => setPage(page + 1)}
                   >
-                    ↓
-                  </span>
-                </button>
-              </td>
-            </tr>
+                    Page {page} - Load more{" "}
+                    <span
+                      style={{
+                        display: "inline-block",
+                        marginLeft: "4px",
+                        fontSize: "1.2em",
+                      }}
+                    >
+                      ↓
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </section>
