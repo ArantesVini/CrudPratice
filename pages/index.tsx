@@ -111,6 +111,7 @@ function HomePage() {
                   <button
                     data-type="load-more"
                     onClick={() => {
+                      setIsLoading(true);
                       const nextPage = page + 1;
                       setPage(nextPage);
                       todoController
@@ -120,6 +121,9 @@ function HomePage() {
                             return [...oldTodos, ...todos];
                           });
                           setTotalPages(pages);
+                        })
+                        .finally(() => {
+                          setIsLoading(false);
                         });
                     }}
                   >
