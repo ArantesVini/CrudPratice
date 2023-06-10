@@ -12,6 +12,7 @@ interface HomeTodo {
 
 /* eslint-disable space-before-function-paren */
 function HomePage() {
+  const [initialLoadComplete, setInitialLoadComplete] = React.useState(false);
   const [totalPages, setTotalPages] = React.useState(0);
   const [page, setPage] = React.useState(1);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
@@ -22,12 +23,13 @@ function HomePage() {
 
   // using useEffect to load infos onload
   React.useEffect(() => {
-    todoController.get({ page }).then(({ todos, pages }) => {
-      setTodos((oldTodos) => {
-        return [...oldTodos, ...todos];
+    setInitialLoadComplete(true);
+    if (!initialLoadComplete) {
+      todoController.get({ page }).then(({ todos, pages }) => {
+        setTodos(todos);
+        setTotalPages(pages);
       });
-      setTotalPages(pages);
-    });
+    }
   }, []);
 
   return (
@@ -97,7 +99,18 @@ function HomePage() {
                 <td colSpan={4} align="center" style={{ textAlign: "center" }}>
                   <button
                     data-type="load-more"
-                    onClick={() => setPage(page + 1)}
+                    onClick={() => {
+                      const nextPage = page + 1;
+                      setPage(nextPage);
+                      todoController
+                        .get({ page: nextPage })
+                        .then(({ todos, pages }) => {
+                          setTodos((oldTodos) => {
+                            return [...oldTodos, ...todos];
+                          });
+                          setTotalPages(pages);
+                        });
+                    }}
                   >
                     Page {page} - Load more{" "}
                     <span
