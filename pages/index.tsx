@@ -14,10 +14,12 @@ interface HomeTodo {
 function HomePage() {
   const [initialLoadComplete, setInitialLoadComplete] = React.useState(false);
   const [totalPages, setTotalPages] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [page, setPage] = React.useState(1);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
 
   const hasMoresPages = totalPages > page;
+  const hasNoTodos = todos.length === 0 && !isLoading;
 
   //   const isFirstPage = page == 1;
 
@@ -25,10 +27,15 @@ function HomePage() {
   React.useEffect(() => {
     setInitialLoadComplete(true);
     if (!initialLoadComplete) {
-      todoController.get({ page }).then(({ todos, pages }) => {
-        setTodos(todos);
-        setTotalPages(pages);
-      });
+      todoController
+        .get({ page })
+        .then(({ todos, pages }) => {
+          setTodos(todos);
+          setTotalPages(pages);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, []);
 
@@ -82,17 +89,21 @@ function HomePage() {
               );
             })}
 
-            <tr>
-              <td colSpan={4} align="center" style={{ textAlign: "center" }}>
-                Loading...
-              </td>
-            </tr>
+            {isLoading && (
+              <tr>
+                <td colSpan={4} align="center" style={{ textAlign: "center" }}>
+                  Loading...
+                </td>
+              </tr>
+            )}
 
-            {/* <tr>
-              <td colSpan={4} align="center">
-                Can&apos;t find any task
-              </td>
-            </tr> */}
+            {hasNoTodos && (
+              <tr>
+                <td colSpan={4} align="center">
+                  Can&apos;t find any TODO
+                </td>
+              </tr>
+            )}
 
             {hasMoresPages && (
               <tr>
