@@ -18,25 +18,17 @@ function HomePage() {
 
   const hasMoresPages = totalPages > page;
 
-  const isFirstPage = page == 1;
+  //   const isFirstPage = page == 1;
 
   // using useEffect to load infos onload
-  isFirstPage
-    ? React.useEffect(() => {
-        todoController.get({ page }).then(({ todos, pages }) => {
-          setTodos((oldTodos) => {
-            return [...oldTodos, ...todos];
-          });
-          setTotalPages(pages);
-        });
-      }, [page])
-    : React.useEffect(() => {
-        todoController.get({ page }).then(({ todos }) => {
-          setTodos((oldTodos) => {
-            return [...oldTodos, ...todos];
-          });
-        });
-      }, [page]);
+  React.useEffect(() => {
+    todoController.get({ page }).then(({ todos, pages }) => {
+      setTodos((oldTodos) => {
+        return [...oldTodos, ...todos];
+      });
+      setTotalPages(pages);
+    });
+  }, []);
 
   return (
     <main>
