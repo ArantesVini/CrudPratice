@@ -19,10 +19,10 @@ function HomePage() {
 
   const [page, setPage] = React.useState(1);
   const [todos, setTodos] = React.useState<HomeTodo[]>([]);
-
-  const homeTodos = todos.filter((todo) => {
-    return todo.content.includes(search);
-  });
+  const homeTodos = todoController.filterTodosByContent<HomeTodo>(
+    search,
+    todos,
+  );
 
   const hasMoresPages = totalPages > page;
   const hasNoTodos = homeTodos.length === 0 && !isLoading;
@@ -66,6 +66,7 @@ function HomePage() {
         <form>
           <input
             type="text"
+            value={search}
             placeholder="Search for"
             onChange={function handlSearch(event) {
               setSearch(event.target.value);
