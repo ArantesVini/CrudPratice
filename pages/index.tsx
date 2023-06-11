@@ -1,6 +1,7 @@
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
 import React from "react";
+import { init } from "next/dist/compiled/@vercel/og/satori";
 
 const bg =
   "https://super.abril.com.br/wp-content/uploads/2021/08/SI_430_Lo-fi_site.png?w=1024&resize=1200,800";
@@ -12,7 +13,7 @@ interface HomeTodo {
 
 /* eslint-disable space-before-function-paren */
 function HomePage() {
-  const [initialLoadComplete, setInitialLoadComplete] = React.useState(false);
+  const initialLoadComplete = React.useRef(false);
   const [totalPages, setTotalPages] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
   const [search, setSearch] = React.useState("");
@@ -27,10 +28,8 @@ function HomePage() {
   const hasMoresPages = totalPages > page;
   const hasNoTodos = homeTodos.length === 0 && !isLoading;
 
-  // using useEffect to load infos onload
   React.useEffect(() => {
-    setInitialLoadComplete(true);
-    if (!initialLoadComplete) {
+    if (!initialLoadComplete.current) {
       todoController
         .get({ page })
         .then(({ todos, pages }) => {
@@ -39,6 +38,7 @@ function HomePage() {
         })
         .finally(() => {
           setIsLoading(false);
+          initialLoadComplete.current = true;
         });
     }
   }, []);
